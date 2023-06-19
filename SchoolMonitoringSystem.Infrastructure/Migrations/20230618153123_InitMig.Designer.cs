@@ -12,7 +12,7 @@ using SchoolMonitoringSystem.Infrastructure.Persistence;
 namespace SchoolMonitoringSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230613144306_InitMig")]
+    [Migration("20230618153123_InitMig")]
     partial class InitMig
     {
         /// <inheritdoc />
@@ -35,7 +35,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("numeric");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uuid");
@@ -44,7 +44,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.HasKey("Id");
 
@@ -62,16 +62,20 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -83,11 +87,11 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("StudentRegNumber")
+                    b.Property<int>("StudentRageNumber")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.HasKey("Id");
 
@@ -101,7 +105,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<string>("SubjectName")
                         .IsRequired()
@@ -111,7 +115,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.HasKey("Id");
 
@@ -127,16 +131,20 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -149,7 +157,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.HasKey("Id");
 

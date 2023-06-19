@@ -1,0 +1,60 @@
+﻿@using SchoolMonitoringSystem.Application.Common.Exceptions;
+@using SchoolMonitoringSystem.Application.UseCases;
+@model PaginatedList<TeacherDto>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcha O'qituvchiar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Stilleri */
+        .edit-button {
+            float: right;
+        }
+
+        .update-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .notification {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if (Model.TotalCount == 0)
+        {
+            <p>Hech narsa topilmadi</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Items)
+                    {
+                        <tr>
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+                            <td>
+                                <a href="@Url.Action("GetByTeacherId", "teacher", student)" class="btn btn-info">Batafsil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between">
+                <a href="/filter/ageteacherfilter" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+            </div>
+        }
+    </div>
+</body>
+</html>

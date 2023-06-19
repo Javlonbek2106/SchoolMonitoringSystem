@@ -1,0 +1,118 @@
+﻿@using SchoolMonitoringSystem.Application.Common.Exceptions;
+@using SchoolMonitoringSystem.Application.UseCases
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<SubjectDto>
+@{
+    List<TeacherDto> teacherDtos = ViewData["teachers"] as List<TeacherDto>;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcha Fanlar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Stilleri */
+        .edit-button {
+            float: right;
+        }
+
+        .update-form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Barcha Fanlar</h1>
+            <button id="create-button" class="btn btn-primary">+</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Teacher First Name</th>
+                    <th>Teacher Last Name</th>
+                    <th>Subject Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var subject in Model)
+                {
+                    TeacherDto teacherDto = teacherDtos.FirstOrDefault(t => t.Id == subject.TeacherId);
+                    <tr>
+                        <td>@teacherDto.FirstName</td>
+                        <td>@teacherDto.LastName</td>
+                        <td>@subject.SubjectName</td>
+                        <td>
+                            <button onclick="editSubject('@subject.Id')" class="btn btn-outline-primary">Tahrirlash</button>
+                        </td>
+                        <td>
+                            <form method="post" action="/subject/deletesubject/@subject.Id" class="delete-form">
+                                <button type="submit" class="btn btn-danger">O'chirish</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="update-form" data-subject-id="@subject.Id" style="display: none;">
+                                <h2>Fanni tahrirlash</h2>
+                                <form class="d-flex align-items-center justify-content-between" action="/subject/updatesubject" method="POST">
+                                    <div>
+                                        <input type="hidden" id="id" name="id" value="@subject.Id">
+                                        <label for="SubjectName">Fan nomi:</label><br>
+                                        <input class="my-2 rounded-3 p-1" type="text" id="SubjectName" name="SubjectName" value="@subject.SubjectName" required><br>
+                                        <input class="btn btn-primary border-0" type="submit" value="Submit">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="TeacherId">O'qituvchi:</label>
+                                        <select class="form-control" id="TeacherId" name="TeacherId" required>
+                                            <option value="">O'qituvchini tanlang</option>
+                                            @foreach (var teacher in teacherDtos)
+                                            {
+                                                <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="container fixed-bottom d-flex align-items-center justify-content-center">
+            @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAllSubjects", "Subject",new{ page= page}),
+            new X.PagedList.Web.Common.PagedListRenderOptions
+            {
+            DisplayItemSliceAndTotal = false,
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            })
+        </div>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const createButton = document.getElementById('create-button');
+        const createForm = document.getElementById('create-form');
+
+        document.getElementById("create-button").addEventListener("click", function() {
+        window.location.href = "/subject/createsubject"; });
+
+        function editSubject(id) {
+            const editForm = document.querySelector('.update-form[data-subject-id="' + id + '"]');
+            const editButton = editForm.querySelector('.edit-button');
+
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'block';
+                editButton.innerText = "Bekor qilish";
+            } else {
+                editForm.style.display = 'none';
+                editButton.innerText = "Tahrirlash";
+            }
+        }
+    </script>
+</body>
+</html>

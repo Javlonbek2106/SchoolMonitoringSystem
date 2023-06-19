@@ -20,10 +20,11 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    StudentRegNumber = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    StudentRageNumber = table.Column<int>(type: "integer", nullable: false),
+                    Img = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,9 +40,10 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Img = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,8 +57,8 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SubjectName = table.Column<string>(type: "text", nullable: false),
                     TeacherId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,8 +79,8 @@ namespace SchoolMonitoringSystem.Infrastructure.Migrations
                     StudentId = table.Column<Guid>(type: "uuid", nullable: false),
                     SubjectId = table.Column<Guid>(type: "uuid", nullable: false),
                     Ball = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false)
                 },
                 constraints: table =>
                 {

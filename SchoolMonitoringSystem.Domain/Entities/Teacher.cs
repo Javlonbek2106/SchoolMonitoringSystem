@@ -9,6 +9,8 @@ namespace SchoolMonitoringSystem.Domain.Entities
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
+        public string Img { get; set; }
+
         public virtual ICollection<Subject> Subjects { get; set; }
     }
 }

@@ -1,0 +1,67 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases
+@model GradeDto
+@{
+    var students = ViewData["students"] as List<StudentDto>;
+    var subjects = ViewData["subjects"] as List<SubjectDto>;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Yaratish</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Stilleri */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        .notification {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Yaratish</h2>
+            <form action="/grade/creategrade" method="POST">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="notification alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+                <div>
+                     <select class="form-control" id="StudentId" name="StudentId" required>
+                         <option value="">Studentni tanlang</option>
+                         @foreach (var student in students)
+                         {
+                             <option value="@student.Id">@student.FirstName  @student.LastName</option>
+                         }
+                     </select>
+                </div>
+                <div>
+                     <select class="form-control" id="SubjectId" name="SubjectId" required>
+                         <option value="">Fanni tanlang</option>
+                         @foreach (var subject in subjects)
+                         {
+                             <option value="@subject.Id">@subject.SubjectName</option>
+                         }
+                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="Ball">Ball:</label>
+                    <input type="number" id="Ball" name="Ball" class="form-control" required>
+                </div>
+                <div class="d-flex justify-content-between">
+                <a href="/grade/getallgrades" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+                <button type="submit" class="btn btn-danger">Yaratish</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

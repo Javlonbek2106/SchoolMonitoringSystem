@@ -1,0 +1,48 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases
+@model SubjectDto
+@{
+    var teachers = ViewData["teachers"] as List<TeacherDto>;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Subject - School Monitoring System</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <form id="create-form" method="post" action="/subject/createsubject">
+      <h1>Fan yaratish</h1>
+      <div class="row justify-content-between">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="SubjectName">Fan nomi:</label>
+            <input type="text" class="form-control" id="SubjectName" name="SubjectName" placeholder="Fan nomini kiriting" required>
+          </div>
+          <div class="mt-3">
+            <input type="submit" value="Yaratish" class="btn btn-primary">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="TeacherId">O'qituvchi:</label>
+            <select class="form-control" id="TeacherId" name="TeacherId" required>
+              <option value="">O'qituvchini tanlang</option>
+              @foreach (var teacher in teachers)
+              {
+                  <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+﻿@using SchoolMonitoringSystem.Application.Common.Exceptions;
+@using SchoolMonitoringSystem.Application.UseCases;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<StudentDto>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcha Studentlar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Stilleri */
+        .edit-button {
+            float: right;
+        }
+
+        .update-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .notification {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if (TempData["CreateMessage"] != null)
+        {
+            <div class="notification alert alert-success">
+                @TempData["CreateMessage"]
+            </div>
+        }
+        @if (TempData["UpdateMessage"] != null)
+        {
+            <div class="notification alert alert-info">
+                @TempData["UpdateMessage"]
+            </div>
+        }
+        @if (TempData["DeleteMessage"] != null)
+        {
+            <div class="notification alert alert-danger">
+                @TempData["DeleteMessage"]
+            </div>
+        }
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Barcha Studentlar</h1>
+            <button id="create-button" class="btn btn-primary" onclick="location.href='/student/createstudent'">+</button>
+        </div>
+
+        <div class="input-group mb-3">
+            <form action="@Url.Action("SearchStudentFilter", "Filter")" method="get">
+            <input type="text" name="SearchPattern" placeholder="Enter search term" />
+            <button type="submit">Qidirish</button>
+            </form>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model)
+                {
+                    <tr>
+                        <td>@student.FirstName</td>
+                        <td>@student.LastName</td>
+                        <td>
+                            <a href ="@Url.Action("GetByStudentId" , student)" class="btn btn-info">Batafsil</a>
+                        </td>
+                        <td>
+                            <a href ="@Url.Action("UpdateStudent" , student)" class="btn btn-outline-primary">Tahrirlash</a>
+                        </td>
+                        <td>
+                            <form method="post" action="/student/deletestudent/@student.Id" class="delete-form">
+                                <button type="submit" class="btn btn-danger">O'chirish</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="container fixed-bottom d-flex align-items-center justify-content-center">
+            @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAllStudents", "Student",new{ page= page}),
+            new X.PagedList.Web.Common.PagedListRenderOptions
+            {
+            DisplayItemSliceAndTotal = false,
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            })
+        </div>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const createButton = document.getElementById('create-button');
+        const createForm = document.getElementById('create-form');
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
+
+        createButton.addEventListener('click', function () {
+            createForm.style.display = 'block';
+        });
+
+        searchButton.addEventListener('click', function () {
+            const searchTerm = searchInput.value.toLowerCase();
+            const tableRows = document.getElementsByTagName('tr');
+
+            for (let i = 0; i < tableRows.length; i++) {
+                const row = tableRows[i];
+                const firstName = row.getElementsByTagName('td')[0].innerText.toLowerCase();
+                const lastName = row.getElementsByTagName('td')[1].innerText.toLowerCase();
+
+                if (firstName.includes(searchTerm) || lastName.includes(searchTerm)) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+
+        function editStudent(id) {
+            const editForm = document.querySelector('.update-form[data-student-id="' + id + '"]');
+            const editButton = editForm.querySelector('.edit-button');
+
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'block';
+                editButton.innerText = "Bekor qilish";
+            } else {
+                editForm.style.display = 'none';
+                editButton.innerText = "Tahrirlash";
+            }
+        }
+
+    </script>
+</body>
+</html>

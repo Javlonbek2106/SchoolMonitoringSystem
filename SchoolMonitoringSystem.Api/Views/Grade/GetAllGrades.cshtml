@@ -1,0 +1,135 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model IEnumerable<GradeDto>
+@{
+    var students = ViewData["students"] as List<StudentDto>;
+    var subjects = ViewData["subjects"] as List<SubjectDto>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcha Natijalar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Stilleri */
+        .edit-button {
+            float: right;
+        }
+
+        .update-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .notification {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if (TempData["CreateMessage"] != null)
+        {
+            <div class="notification alert alert-success">
+                @TempData["CreateMessage"]
+            </div>
+        }
+        @if (TempData["UpdateMessage"] != null)
+        {
+            <div class="notification alert alert-info">
+                @TempData["UpdateMessage"]
+            </div>
+        }
+        @if (TempData["DeleteMessage"] != null)
+        {
+            <div class="notification alert alert-danger">
+                @TempData["DeleteMessage"]
+            </div>
+        }
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Barcha Natijalar</h1>
+            <button id="create-button" class="btn btn-primary" onclick="location.href='/grade/creategrade'">+</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Subject</th>
+                    <th>Ball</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grade in Model)
+                {
+                    StudentDto? student = students.FirstOrDefault(s => s.Id == grade.StudentId);
+                    SubjectDto? subjectDto = subjects.FirstOrDefault(s => s.Id == grade.SubjectId);
+                    <tr>
+                        <td>@student.FirstName</td>
+                        <td>@student.LastName</td>
+                        <td>@subjectDto.SubjectName</td>
+                        <td>@grade.Ball</td>
+                        <td>
+                            <button onclick="editGrade('@grade.Id')" class="btn btn-outline-primary edit-button">Tahrirlash</button>
+                        </td>
+                        <td>
+                            <form method="post" action="/grade/deletegrade/@grade.Id" class="delete-form">
+                                <button type="submit" class="btn btn-danger">O'chirish</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div class="update-form" data-grade-id="@grade.Id" style="display: none;">
+                                <h2>Dereceni tahrirlash</h2>
+                                <form action="/grade/updategrade" method="POST">
+                                    <input type="hidden" id="id" name="id" value="@grade.Id">
+                                    
+                                    <label for="Ball">Ball:</label>
+                                    <input type="number" id="Ball" name="Ball" value="@grade.Ball" required>
+                                    <input type="submit" value="Submit">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="container fixed-bottom d-flex align-items-center justify-content-center">
+            @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAllGrades", "Grade",new{ page= page}),
+            new X.PagedList.Web.Common.PagedListRenderOptions
+            {
+            DisplayItemSliceAndTotal = false,
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            })
+        </div>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const createButton = document.getElementById('create-button');
+        const createForm = document.getElementById('create-form');
+
+        createButton.addEventListener('click', function () {
+            createForm.style.display = 'block';
+        });
+
+        function editGrade(id) {
+            const editForm = document.querySelector('.update-form[data-grade-id="' + id + '"]');
+            const editButton = editForm.querySelector('.edit-button');
+
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'block';
+                editButton.innerText = "Bekor qilish";
+            } else {
+                editForm.style.display = 'none';
+                editButton.innerText = "Tahrirlash";
+            }
+        }
+    </script>
+</body>
+</html>

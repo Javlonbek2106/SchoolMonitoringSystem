@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolMonitoringSystem.Application.Common;
 using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext/*<IdentityUser>*/, IApplicationDbContext
     {
 
         public DbSet<Student> Students { get; set; }
@@ -15,7 +17,6 @@ namespace SchoolMonitoringSystem.Infrastructure.Persistence
 
 
         private readonly AuditableEntitySaveChangesInterceptor _interceptor;
-
 
         private readonly DbContextOptions<ApplicationDbContext>? options;
         
@@ -35,11 +36,11 @@ namespace SchoolMonitoringSystem.Infrastructure.Persistence
 
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
-                //modelBuilder.Entity(entity.Name).Property(typeof(DateTimeOffset), "CreatedDate")
-                //    .HasColumnType("timestamptz");
+                modelBuilder.Entity(entity.Name).Property(typeof(DateTimeOffset), "CreatedDate")
+                    .HasColumnType("timestamptz");
 
-                //modelBuilder.Entity(entity.Name).Property(typeof(DateTimeOffset), "UpdatedDate")
-                //    .HasColumnType("timestamptz");
+                modelBuilder.Entity(entity.Name).Property(typeof(DateTimeOffset), "UpdatedDate")
+                    .HasColumnType("timestamptz");
             }
 
             base.OnModelCreating(modelBuilder);
