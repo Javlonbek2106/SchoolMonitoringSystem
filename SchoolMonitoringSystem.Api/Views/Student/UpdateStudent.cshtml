@@ -12,7 +12,7 @@
             background-color: #f2f2f2;
             padding: 20px;
         }
-        
+
         .update-form {
             background-color: #fff;
             border-radius: 5px;
@@ -21,22 +21,22 @@
             max-width: 500px;
             margin: 0 auto;
         }
-        
+
         h2 {
             font-size: 24px;
             margin-bottom: 20px;
             color: #333;
         }
-        
+
         form {
             display: grid;
             gap: 10px;
         }
-        
+
         label {
             font-weight: bold;
         }
-        
+
         input[type="text"],
         input[type="number"],
         input[type="date"] {
@@ -45,7 +45,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
         input[type="submit"] {
             background-color: #4caf50;
             color: #fff;
@@ -54,35 +54,112 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
-        input[type="submit"]:hover {
-            background-color: #45a049;
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+
+        body {
+            margin: 0;
+            padding: 0;
         }
+
+        .full-page-background {
+            background-image: url('/images/340434.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .align-content-xl-center {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .display-4 {
+            margin-bottom: 1rem;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+            .social-links a {
+                color: black;
+                text-decoration: none;
+            }
     </style>
 </head>
 <body>
-    <div class="updatee-form">
-        <h2>Student ma'lumotlarini tahrirlash</h2>
-        <form id="updateForm" action="/student/updatestudent" method="POST">
-            <input type="hidden" id="id" name="id" value="@Model.Id">
-            <label for="FirstName">Ism:</label>
-            <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
-            <label for="LastName">Familiya:</label>
-            <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
-            <label for="PhoneNumber">Telefon raqami:</label>
-            <input type="text" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required>
-            <label for="Birthdate">Tug'ilgan sanasi:</label>
-            <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
-            <label for="Email">Elektron pochta:</label>
-            <input type="text" id="Email" name="Email" value="@Model.Email" required>
-            <label for="StudentRegNumber">Student raqami:</label>
-            <input type="number" id="StudentRegNumber" name="StudentRegNumber" value="@Model.StudentRageNumber" required>
-            <div class="form-group">
-               <label for="Img">Yangi Rasm</label>
-                <input type="file" id="Img" name="Img" class="form-control-file" />
-            </div>
-            <input type="submit" value="Submit">
-        </form>
+    <div class="full-page-background">
+        <div class="updatee-form">
+            <h2>Student ma'lumotlarini tahrirlash</h2>
+            <form id="updateForm" enctype="multipart/form-data" action="/student/updatestudent" method="POST">
+                <input type="hidden" id="id" name="id" value="@Model.Id">
+                <label for="FirstName">Ism:</label>
+                <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
+                <label for="LastName">Familiya:</label>
+                <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
+                <label for="PhoneNumber">Telefon raqami:</label>
+                <input type="tel" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" pattern="^\+998\d{9}$" title="Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam" required>
+                <span class="text-danger" id="phoneNumberError"></span>
+                <label for="Birthdate">Tug'ilgan sanasi:</label>
+                <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
+                <label for="Email">Elektron pochta:</label>
+                <input type="email" id="Email" name="Email" value="@Model.Email" required>
+                <label for="StudentRegNumber">Student raqami:</label>
+                <input type="text" id="StudentRegNumber" name="StudentRegNumber" value="@Model.StudentRageNumber" required>
+                <div class="form-group">
+                    <label asp-for="Img" class="control-label">Rasm</label>
+                    <input type="file" id="Img" name="Img" class="form-control-file" />
+                    <span class="text-danger" id="imgError"></span>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </div>
+    <script>
+        var phoneNumberInput = document.getElementById("PhoneNumber");
+        var phoneNumberError = document.getElementById("phoneNumberError");
+
+        phoneNumberInput.addEventListener("input", function (event) {
+            if (phoneNumberInput.validity.patternMismatch) {
+                phoneNumberError.textContent = "Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam";
+            } else {
+                phoneNumberError.textContent = "";
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            var input = document.getElementById('Img');
+            var file = input.files[0];
+            var imgError = document.getElementById('imgError');
+            var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+
+            if (input.value && !allowedExtensions.exec(input.value)) {
+                imgError.textContent = 'Faqat JPG va JPEG formatidagi rasm fayllarini yuklang.';
+                input.value = ''; // Faylni tanlanganidan keyin o'chirish
+
+                event.preventDefault(); // Formani yuborishni to'xtatish
+            } else {
+                imgError.textContent = '';
+            }
+        });
+    </script>
 </body>
 </html>
+

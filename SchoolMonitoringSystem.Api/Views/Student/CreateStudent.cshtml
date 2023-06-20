@@ -4,46 +4,132 @@
 <head>
     <title>Talaba yaratish</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .full-page-background {
+            background-image: url('/images/340434.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .align-content-xl-center {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .display-4 {
+            margin-bottom: 1rem;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+            .social-links a {
+                color: black;
+                text-decoration: none;
+            }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Talaba yaratish</h1>
-        <form id="create-form" enctype="multipart/form-data" method="post" action="/student/createstudent">
-            <div class="form-group">
-                <label for="FirstName">Ism:</label>
-                <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="Ismni kiriting" required>
-            </div>
-            <div class="form-group">
-                <label for="LastName">Familiya:</label>
-                <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Familiyani kiriting" required>
-            </div>
-            <div class="form-group">
-                <label for="BirthDate">Tug'ilgan sanasi:</label>
-                <input type="date" class="form-control" id="BirthDate" name="BirthDate" placeholder="Tug'ilgan sanani kiriting" required>
-            </div>
-            <div class="form-group">
-                <label for="Email">Elektron pochta:</label>
-                <input type="email" class="form-control" id="Email" name="Email" placeholder="Elektron pochtani kiriting" required>
-            </div>
-            <div class="form-group">
-                <label for="PhoneNumber">Telefon raqami:</label>
-                <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Telefon raqamini kiriting" required>
-            </div>
-            <div class="form-group">
-                <label for="StudentRegNumber">Student raqami:</label>
-                <input type="text" class="form-control" id="StudentRegNumber" name="StudentRegNumber" placeholder="Student raqamini kiriting" required>
-            </div>
-            <div class="form-group">
-                <label asp-for="Img" class="control-label">Rasm</label>
-                <input type="file" asp-for="Img" class="form-control-file" />
-                <span asp-validation-for="Img" class="text-danger"></span>
-            </div>
-            <div class="d-flex justify-content-between">
-                <a href="/student/getallstudents" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
-                <button type="submit" class="btn btn-danger">Yaratish</button>
-            </div>
-        </form>
+    <div class="full-page-background">
+        <div class="container">
+            <h1>Talaba yaratish</h1>
+            <form id="create-form" enctype="multipart/form-data" method="post" action="/student/createstudent">
+                <div class="form-group">
+                    <label for="FirstName">Ism:</label>
+                    <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="Ismni kiriting" required>
+                </div>
+                <div class="form-group">
+                    <label for="LastName">Familiya:</label>
+                    <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Familiyani kiriting" required>
+                </div>
+                <div class="form-group">
+                    <label for="BirthDate">Tug'ilgan sanasi:</label>
+                    <input type="date" class="form-control" id="BirthDate" name="BirthDate" placeholder="Tug'ilgan sanani kiriting" required>
+                </div>
+                <div class="form-group">
+                    <label for="Email">Elektron pochta:</label>
+                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Elektron pochtani kiriting" required>
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber">Telefon raqami:</label>
+                    <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Telefon raqamini kiriting" required pattern="^\+998\d{9}$" title="Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam">
+                    <span class="text-danger" id="phoneNumberError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="StudentRegNumber">Student raqami:</label>
+                    <input type="text" class="form-control" id="StudentRegNumber" name="StudentRegNumber" placeholder="Student raqamini kiriting" required>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Img" class="control-label">Rasm</label>
+                    <input type="file" asp-for="Img" class="form-control-file" id="Img" required>
+                    <span asp-validation-for="Img" class="text-danger" id="imgError"></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="/student/getallstudents" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+                    <button type="submit" class="btn btn-danger" id="createButton">Yaratish</button>
+                </div>
+            </form>
+        </div>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        createButton.addEventListener("click", function (event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        function validateForm() {
+            var firstName = document.getElementById("FirstName").value;
+            var lastName = document.getElementById("LastName").value;
+            var birthDate = document.getElementById("BirthDate").value;
+            var email = document.getElementById("Email").value;
+            var phoneNumber = document.getElementById("PhoneNumber").value;
+            var studentRegNumber = document.getElementById("StudentRegNumber").value;
+            var imgInput = document.getElementById("Img");
+            var file = imgInput.files[0];
+            var imgError = document.getElementById("imgError");
+            var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+
+            if (!firstName || !lastName || !birthDate || !email || !phoneNumber || !studentRegNumber) {
+                alert("Iltimos, barcha maydonlarni to'ldiring!");
+                return false;
+            }
+
+            if (!file) {
+                imgError.textContent = 'Rasm yuklash shart.';
+                return false;
+            }
+
+            if (!allowedExtensions.exec(file.name)) {
+                imgError.textContent = 'Faqat JPG va JPEG formatidagi rasm fayllarini yuklang.';
+                return false;
+            }
+
+            imgError.textContent = '';
+            return true;
+        }
+    </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application.UseCases;
 using X.PagedList;
 
@@ -13,6 +14,7 @@ namespace SchoolMonitoringSystem.Api.Controllers
         }
 
         [HttpPost]
+        [ActionModelValidationAttribute]
         public async Task<IActionResult> CreateTeacher(CreateTeacherCommand teacherCommand)
         {
             await Mediator.Send(teacherCommand);

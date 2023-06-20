@@ -1,6 +1,8 @@
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using SchoolMonitoringSystem.Api.Middleware;
 using SchoolMonitoringSystem.Application;
-using SchoolMonitoringSystem.Infrastructure;
+using SchoolMonitoringSystem.Infrastructure.Persistence;
+using Serilog;
 
 namespace SchoolMonitoringSystem.Api
 {
@@ -10,19 +12,20 @@ namespace SchoolMonitoringSystem.Api
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             IConfiguration configuration = builder.Configuration;
-         
-            //LoggingConfigurations.UseLogging(configuration);
-            //builder.Host.UseSerilog();
-            // Add services to the container.
+
+            LoggingConfigurations.UseLogging(configuration);
+            builder.Host.UseSerilog();
+            //Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddInfrastructureService(configuration);
             builder.Services.AddApplicationService();
             builder.Services.AddLazyCache();
             builder.Services.AddRazorPages();
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             var app = builder.Build();
+            app.UseCustomMiddleware();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -37,11 +40,11 @@ namespace SchoolMonitoringSystem.Api
             app.UseRouting();
 
             app.UseAuthorization();
-            //app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
         }

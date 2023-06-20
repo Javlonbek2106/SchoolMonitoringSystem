@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using SchoolMonitoringSystem.Application.Common;
 using SchoolMonitoringSystem.Application.Common.Exceptions;
 using SchoolMonitoringSystem.Application.Common.Interfaces;
+using SchoolMonitoringSystem.Application.Common.Validations;
 using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Application.UseCases;
@@ -18,9 +20,9 @@ public class CreateStudentCommand : IRequest<StudentDto>
     public DateTime BirthDate { get; set; }
 
     public string PhoneNumber { get; set; }
-
+    [EmailAddress]
     public string Email { get; set; }
-    //[ValidateImage(5 * 1024 * 1024, ".jpg", ".jpeg", ".jfif")]
+    [ValidateImage(5 * 1024 * 1024, ".jpg", ".jpeg", ".jfif")]
     public IFormFile Img { get; set; }
 
 }
@@ -43,7 +45,7 @@ public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand,
     {
 
         FilterIfStudentExists(request.PhoneNumber);
-       
+
         Student student = new()
         {
             FirstName = request.FirstName,

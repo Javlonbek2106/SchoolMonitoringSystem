@@ -38,7 +38,6 @@ namespace SchoolMonitoringSystem.Api.Middleware
             if (response.StatusCode != StatusCodes.Status200OK)
                 return false;
 
-            // The 20kb length limit is not based in science. Feel free to change
             if (response.Body.Length > 20 * 1024)
                 return false;
 

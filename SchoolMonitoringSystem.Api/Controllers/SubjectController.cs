@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application.UseCases;
 using X.PagedList;
 
@@ -14,6 +15,7 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return View();
         }
         [HttpPost]
+        [ActionModelValidationAttribute]
         public async Task<IActionResult> CreateSubject(CreateSubjectCommand subjectCommand)
         {
             var result = await Mediator.Send(subjectCommand);

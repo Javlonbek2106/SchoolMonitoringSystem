@@ -13,7 +13,7 @@ public static class LoggingConfigurations
                    .WriteTo.TelegramBot(
                        token: configuration["TelegramBot:Token"],
                        chatId: configuration["TelegramBot:ChatId"],
-                       restrictedToMinimumLevel: LogEventLevel.Information
+                       restrictedToMinimumLevel: LogEventLevel.Error
                    )
                    .Enrich.FromLogContext()
                    .CreateLogger();

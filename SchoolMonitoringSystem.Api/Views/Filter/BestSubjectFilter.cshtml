@@ -1,0 +1,96 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases;
+@using SchoolMonitoringSystem.Application.UseCases.Filters;
+@model BestSubjectFilterQuery
+@{
+    ViewData["Title"] = "Create Teacher";
+    List<TeacherDto>? teachers = ViewData["teachers"] as List<TeacherDto>;
+}
+
+<style>
+    .number {
+        color: red;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .full-page-background {
+        background-image: url('/images/340434.jpg');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    .align-content-xl-center {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .display-4 {
+        margin-bottom: 1rem;
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+        .social-links a {
+            color: black;
+            text-decoration: none;
+        }
+</style>
+
+<div class="full-page-background">
+<h3 style="text-align: center;">Filter Subjects</h3>
+
+<div style="display: flex; justify-content: center;">
+    <form asp-action="BestSubjectsFilter" method="post" style="width: 400px;">
+        <div class="form-group">
+            <label for="TeacherId">Teacher:</label>
+            <select class="form-control" id="TeacherId" name="TeacherId" required>
+                <option value="">Choose Teacher</option>
+                @foreach (var teacher in teachers)
+                {
+                    <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MinBall">Minimum Ball:</label>
+            <input asp-for="MinBall" class="form-control" required />
+            <span asp-validation-for="MinBall" class="number"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TakeStudentNum">Studentlar soni:</label>
+            <input asp-for="TakeStudentNum" class="form-control" required />
+            <span asp-validation-for="TakeStudentNum" class="number"></span>
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

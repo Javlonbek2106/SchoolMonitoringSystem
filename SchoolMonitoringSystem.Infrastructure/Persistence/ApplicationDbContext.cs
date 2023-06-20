@@ -7,7 +7,7 @@ using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext/*<IdentityUser>*/, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IApplicationDbContext
     {
 
         public DbSet<Student> Students { get; set; }
@@ -49,9 +49,7 @@ namespace SchoolMonitoringSystem.Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.AddInterceptors(_interceptor);
-        }
-
-      
+        }    
     }
 
 }

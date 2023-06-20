@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolMonitoringSystem.Application.Common;
+using SchoolMonitoringSystem.Application.UseCases;
 using SchoolMonitoringSystem.Application.UseCases.Filters;
 
 namespace SchoolMonitoringSystem.Api.Controllers
@@ -40,7 +41,20 @@ namespace SchoolMonitoringSystem.Api.Controllers
 		{
 			return View(await Mediator.Send(searchTeacherFilter));
 		}
-		public async Task<IActionResult> BestTeacherFilter(BestTeacherFilterQuery bestTeacherFilter)
+        [HttpGet]
+        public async Task<IActionResult> BestSubjectFilter()
+        {
+            ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BestSubjectsFilter(BestSubjectFilterQuery students)
+        {
+            ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());
+            return View(await Mediator.Send(students));
+        }
+        public async Task<IActionResult> BestTeacherFilter(BestTeacherFilterQuery bestTeacherFilter)
 		{
 			return View(await Mediator.Send(bestTeacherFilter));
 		}

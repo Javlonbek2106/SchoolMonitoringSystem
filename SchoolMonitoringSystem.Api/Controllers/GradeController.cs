@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application;
 using SchoolMonitoringSystem.Application.UseCases;
 using X.PagedList;
@@ -18,6 +19,7 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return View();
         }
         [HttpPost]
+        [ActionModelValidationAttribute]
         public async Task<IActionResult> CreateGrade(CreateGradeCommand gradeCommand)
         {
             var result = await Mediator.Send(gradeCommand);
