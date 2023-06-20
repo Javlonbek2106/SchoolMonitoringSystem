@@ -1,0 +1,63 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases;
+@model List<SubjectDto>
+
+@{
+    ViewData["Title"] = "All Subjects";
+    //Layout = "~/Views/Shared/_Layout.cshtml"; // İsteğe bağlı olarak bir layout belirtebilirsiniz
+    List<TeacherDto>? Teachers = ViewData["teachers"] as List<TeacherDto>;
+    string? FullName = (Model.Count != 0) ? Teachers.First(x => x.Id == Model.First().TeacherId).FirstName + " " +
+        Teachers.First(x => x.Id == Model.First().TeacherId).LastName
+        : "";
+}
+
+<style>
+    .table-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 60%;
+    }
+
+    .table th {
+        width: 40%;
+    }
+</style>
+
+<h3 style="text-align: center;">Fanlar</h3>
+
+@if (!string.IsNullOrEmpty(FullName))
+{
+    <h5 style="text-align: center;">Bu o'qituvchisi @FullName bo'lgan fanlar ro'yxati.
+Ushbu ro'yxat ballari belgilangan balldan yuqori bo'lgan talabalar soni uchun filtrlanadi.</h5>
+}
+else
+{
+    <h5 style="text-align: center;">Bu o'qituvchiga tegishli dars yo'q.</h5>
+}
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fan Nomi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count != 0)
+            {
+                @foreach (var subject in Model)
+                {
+                    if (subject != null)
+                    {
+                        <tr>
+                            <td>@subject.SubjectName</td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>

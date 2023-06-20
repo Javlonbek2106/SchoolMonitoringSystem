@@ -1,10 +1,9 @@
 ﻿using FluentValidation.Results;
 
-namespace SchoolMonitoringSystem.Application.Common.Exceptions
+namespace SchoolMonitoringSystem.Application.Common
 {
-    public class ValidationException : Exception
+    public  class ValidationException : Exception
     {
-
         public ValidationException()
             : base("One or more validation failures have occurred.")
         {
@@ -28,7 +27,6 @@ namespace SchoolMonitoringSystem.Application.Common.Exceptions
         }
 
         public IDictionary<string, string[]> Errors { get; set; }
-
 
     }
 }

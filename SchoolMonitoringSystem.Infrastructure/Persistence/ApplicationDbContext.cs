@@ -5,7 +5,11 @@ using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Infrastructure.Persistence
 {
+<<<<<<< Updated upstream
     public class ApplicationDbContext : DbContext, IApplicationDbContext
+=======
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IApplicationDbContext
+>>>>>>> Stashed changes
     {
 
         public DbSet<Student> Students { get; set; }

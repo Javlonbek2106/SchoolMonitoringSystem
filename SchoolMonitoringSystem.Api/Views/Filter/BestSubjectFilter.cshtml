@@ -1,0 +1,50 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases;
+@using SchoolMonitoringSystem.Application.UseCases.Filters;
+@model BestSubjectFilterQuery
+@{
+    ViewData["Title"] = "Create Teacher";
+    List<TeacherDto>? teachers = ViewData["teachers"] as List<TeacherDto>;
+}
+
+<style>
+    .number {
+        color: red;
+    }
+</style>
+
+<h3 style="text-align: center;">Filter Subjects</h3>
+
+<div style="display: flex; justify-content: center;">
+    <form asp-action="BestSubjectsFilter" method="post" style="width: 400px;">
+        <div class="form-group">
+            <label for="TeacherId">Teacher:</label>
+            <select class="form-control" id="TeacherId" name="TeacherId" required>
+                <option value="">Choose Teacher</option>
+                @foreach (var teacher in teachers)
+                {
+                    <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MinBall">Minimum Desired Ball:</label>
+            <input asp-for="MinBall" class="form-control" required />
+            <span asp-validation-for="MinBall" class="number"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TakeStudentNum">Minimum number of students:</label>
+            <input asp-for="TakeStudentNum" class="form-control" required />
+            <span asp-validation-for="TakeStudentNum" class="number"></span>
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

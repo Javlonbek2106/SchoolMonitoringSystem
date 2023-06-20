@@ -1,0 +1,89 @@
+﻿@using SchoolMonitoringSystem.Application.UseCases
+@model SchoolMonitoringSystem.Application.UseCases.StudentDto
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Talabaning ma'lumotlarini tahrirlash</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        
+        .update-form {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        form {
+            display: grid;
+            gap: 10px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="updatee-form" >
+        <h2>Student ma'lumotlarini tahrirlash</h2>
+        <form id="updateForm" enctype="multipart/form-data" action="/student/updatestudent" method="POST">
+            <input type="hidden" id="id" name="id" value="@Model.Id">
+            <label for="FirstName">Ism:</label>
+            <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
+            <label for="LastName">Familiya:</label>
+            <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
+            <label for="PhoneNumber">Telefon raqami:</label>
+            <input type="text" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required>
+            <label for="Birthdate">Tug'ilgan sanasi:</label>
+            <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
+            <label for="Email">Elektron pochta:</label>
+            <input type="text" id="Email" name="Email" value="@Model.Email" required>
+            <label for="StudentRegNumber">Student raqami:</label>
+            <input type="number" id="StudentRegNumber" name="StudentRegNumber" value="@Model.StudentRageNumber" required>
+            <div class="form-group">
+                <label asp-for="Img" class="control-label">Rasm</label>
+                <input type="file" asp-for="Img" class="form-control-file" />
+                <span asp-validation-for="Img" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
