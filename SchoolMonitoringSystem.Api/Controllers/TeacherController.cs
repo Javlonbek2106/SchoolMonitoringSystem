@@ -28,12 +28,13 @@ namespace SchoolMonitoringSystem.Api.Controllers
         }
 
         [HttpGet]
+        [LazyCache(5,10)]
         public async Task<IActionResult> GetAllTeachers(int page = 1)
         {
             ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());
             IPagedList<TeacherDto> query = (await Mediator
                 .Send(new GetAllTeacherQuery()))
-                .ToPagedList(page, 10);
+                .ToPagedList(page, 5);
             return View(query);
         }
 

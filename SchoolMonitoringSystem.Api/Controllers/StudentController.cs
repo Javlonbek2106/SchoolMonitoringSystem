@@ -28,11 +28,12 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return View(await Mediator.Send(studentQuery));
         }
         [HttpGet]
+        [LazyCache(5,10)]
         public async ValueTask<IActionResult> GetAllStudents(int page = 1)
         {
             IPagedList<StudentDto> query = (await Mediator
                 .Send(new GetAllStudentQuery()))
-                .ToPagedList(page, 10);
+                .ToPagedList(page, 5);
             return View(query);
         }
         [HttpGet]

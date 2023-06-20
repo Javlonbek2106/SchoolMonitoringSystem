@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application;
 using SchoolMonitoringSystem.Application.UseCases;
@@ -26,14 +27,15 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return RedirectToAction(nameof(GetAllGrades));
         }
         [HttpGet]
-        //[LazyCache(5, 10)]
+        [LazyCache(5, 10)]
+        [EnableRateLimiting("Token")]
         public async Task<IActionResult> GetAllGrades(int page = 1)
         {
             ViewData["students"] = await Mediator.Send(new GetAllStudentQuery());
             ViewData["subjects"] = await Mediator.Send(new GetAllSubjectQuery());
             IPagedList<GradeDto> query = (await Mediator
                 .Send(new GetAllGradeQuery()))
-                .ToPagedList(page, 10);
+                .ToPagedList(page, 5);
             return View(query);
         }
         [HttpGet]

@@ -1,10 +1,13 @@
 ﻿@using SchoolMonitoringSystem.Application.Common.Exceptions;
 @using SchoolMonitoringSystem.Application.UseCases;
-@model List<StudentDto>
+@model List<SubjectDto>
+@{
+    List<TeacherDto> teachers = ViewData["teachers"] as List<TeacherDto>;
+}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Barcha Studentlar</title>
+    <title>Barcha Fanlar</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* CSS Stilleri */
@@ -78,26 +81,26 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th></th>
+                        <th>Teacher FirstName</th>
+                        <th>Teacher LastName</th>
+                        <th>Subject Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var student in Model)
+               <tbody>
+                    @foreach (var subject in Model)
                     {
+                     TeacherDto? teacherDto = teachers.FirstOrDefault(t => t.Id == subject.TeacherId);
+                            
                         <tr>
-                            <td>@student.FirstName</td>
-                            <td>@student.LastName</td>
-                            <td>
-                                <a href="@Url.Action("GetByStudentId", "student", student)" class="btn btn-info">Batafsil</a>
-                            </td>
+                            <td>@teacherDto.LastName</td>
+                            <td>@teacherDto.FirstName</td>
+                            <td>@subject.SubjectName</td>
                         </tr>
                     }
                 </tbody>
             </table>
             <div class="d-flex justify-content-between">
-                <a href="/student/getallstudents" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+                <a href="/teacher/getallteachers" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
             </div>
         }
     </div>

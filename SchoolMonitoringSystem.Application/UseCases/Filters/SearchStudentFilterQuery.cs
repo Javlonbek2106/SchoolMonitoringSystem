@@ -7,13 +7,13 @@ using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Application.UseCases.Filters
 {
-	public class SearchStudentFilterQuery : IRequest<PaginatedList<StudentDto>>
+	public class SearchStudentFilterQuery : IRequest<List<StudentDto>>
 	{
 		public int PageNumber { get; set; } = 1;
 		public int PageSize { get; set; } = 10;
 		public string? SearchPattern { get; set; }
 	}
-	public class SearchStudentFilterQueryHandler : IRequestHandler<SearchStudentFilterQuery, PaginatedList<StudentDto>>
+	public class SearchStudentFilterQueryHandler : IRequestHandler<SearchStudentFilterQuery, List<StudentDto>>
 	{
 
 
@@ -26,7 +26,7 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 			_mapper = mapper;
 		}
 
-		public async Task<PaginatedList<StudentDto>> Handle(SearchStudentFilterQuery request, CancellationToken cancellationToken)
+		public async Task<List<StudentDto>> Handle(SearchStudentFilterQuery request, CancellationToken cancellationToken)
 		{
 			Student[] students = await _dbContext.Students.Include(x => x.Grades).ToArrayAsync();
 
@@ -37,11 +37,8 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 
 			List<StudentDto> studentDtos = _mapper.Map<StudentDto[]>(SearchStudentFilter).ToList();
 
-			PaginatedList<StudentDto> paginatedList =
-				 PaginatedList<StudentDto>.CreateAsync(
-					studentDtos, request.PageNumber, request.PageSize);
-
-			return paginatedList;
+			
+			return studentDtos;
 		}
 	}
 }

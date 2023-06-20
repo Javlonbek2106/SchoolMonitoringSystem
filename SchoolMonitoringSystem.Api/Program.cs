@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using SchoolMonitoringSystem.Api.Middleware;
 using SchoolMonitoringSystem.Application;
+using SchoolMonitoringSystem.Application.RateLimiting;
 using SchoolMonitoringSystem.Infrastructure.Persistence;
 using Serilog;
 
@@ -16,6 +17,7 @@ namespace SchoolMonitoringSystem.Api
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             IConfiguration configuration = builder.Configuration;
 
+            ConfigurationServices.AddRateLimiters(builder);
             LoggingConfigurations.UseLogging(configuration);
             builder.Host.UseSerilog();
             //Add services to the container.

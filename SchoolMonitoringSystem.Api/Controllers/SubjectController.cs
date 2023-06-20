@@ -22,12 +22,13 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return RedirectToAction(nameof(GetAllSubjects));
         }
         [HttpGet]
+        [LazyCache(5,10)]
         public async ValueTask<IActionResult> GetAllSubjects(int page = 1)
         {
             ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());
             IPagedList<SubjectDto> query = (await Mediator
                 .Send(new GetAllSubjectQuery()))
-                .ToPagedList(page, 10);
+                .ToPagedList(page, 5);
             return View(query);
         }
         [HttpPost]

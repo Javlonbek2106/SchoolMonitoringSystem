@@ -37,6 +37,11 @@ namespace SchoolMonitoringSystem.Api.Controllers
 		{
 			return View(await Mediator.Send(searchStudentFilter));
 		}
+        public async Task<IActionResult> SearchSubjectFilter(SearchSubjectFilterQuery searchSubjectFilter)
+		{
+            ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());
+            return View(await Mediator.Send(searchSubjectFilter));
+		}
         public async Task<IActionResult> SearchTeacherFilter(SearchTeacherFilterQuery searchTeacherFilter)
 		{
 			return View(await Mediator.Send(searchTeacherFilter));

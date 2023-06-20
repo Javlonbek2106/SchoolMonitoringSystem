@@ -32,9 +32,7 @@
             background-size: cover;
             background-position: center;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding-top: 50px;
             align-items: center;
             color: black;
             text-align: center;
@@ -74,6 +72,12 @@
             <h1>Barcha Fanlar</h1>
             <button id="create-button" class="btn btn-primary">+</button>
         </div>
+            <div class="input-group mb-3">
+                <form action="@Url.Action("SearchSubjectFilter", "Filter")" method="get">
+                    <input type="text" name="SearchPattern" placeholder="Enter search term" />
+                    <button type="submit">Qidirish</button>
+                </form>
+            </div>
         <table class="table">
             <thead>
                 <tr>
