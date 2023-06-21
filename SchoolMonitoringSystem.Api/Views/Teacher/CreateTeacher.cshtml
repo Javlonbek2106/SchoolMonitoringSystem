@@ -102,13 +102,12 @@
             var birthDate = document.getElementById("BirthDate").value;
             var email = document.getElementById("Email").value;
             var phoneNumber = document.getElementById("PhoneNumber").value;
-            var studentRegNumber = document.getElementById("StudentRegNumber").value;
             var imgInput = document.getElementById("Img");
             var file = imgInput.files[0];
             var imgError = document.getElementById("imgError");
             var allowedExtensions = /(\.jpg|\.jpeg)$/i;
 
-            if (!firstName || !lastName || !birthDate || !email || !phoneNumber ) {
+            if (!firstName || !lastName || !birthDate || !email || !phoneNumber) {
                 alert("Iltimos, barcha maydonlarni to'ldiring!");
                 return false;
             }

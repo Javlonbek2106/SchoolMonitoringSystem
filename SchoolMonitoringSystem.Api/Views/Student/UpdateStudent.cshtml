@@ -29,8 +29,8 @@
         }
 
         form {
-            display: grid;
-            gap: 10px;
+            display: inline;
+            gap: 1px;
         }
 
         label {
@@ -103,63 +103,65 @@
                 text-decoration: none;
             }
     </style>
-</head>
-<body>
-    <div class="full-page-background">
-        <div class="updatee-form">
-            <h2>Student ma'lumotlarini tahrirlash</h2>
+        <title>Student ma'lumotlarini tahrirlash</title>
+    </head>
+    <body>
+        <div class="full-page-background">
+            <div class="update-form">
+                <h2>Student ma'lumotlarini tahrirlash</h2>
             <form id="updateForm" enctype="multipart/form-data" action="/student/updatestudent" method="POST">
                 <input type="hidden" id="id" name="id" value="@Model.Id">
-                <label for="FirstName">Ism:</label>
-                <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
-                <label for="LastName">Familiya:</label>
-                <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
-                <label for="PhoneNumber">Telefon raqami:</label>
-                <input type="tel" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" pattern="^\+998\d{9}$" title="Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam" required>
-                <span class="text-danger" id="phoneNumberError"></span>
-                <label for="Birthdate">Tug'ilgan sanasi:</label>
-                <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
-                <label for="Email">Elektron pochta:</label>
-                <input type="email" id="Email" name="Email" value="@Model.Email" required>
-                <label for="StudentRegNumber">Student raqami:</label>
-                <input type="text" id="StudentRegNumber" name="StudentRegNumber" value="@Model.StudentRageNumber" required>
-                <div class="form-group">
-                    <label asp-for="Img" class="control-label">Rasm</label>
-                    <input type="file" id="Img" name="Img" class="form-control-file" />
-                    <span class="text-danger" id="imgError"></span>
-                </div>
-                <input type="submit" value="Submit">
+                    <label for="FirstName">Ism:</label>
+                    <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
+                    <label for="LastName">Familiya:</label>
+                    <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
+                    <label for="PhoneNumber">Telefon raqami:</label>
+                    <input type="tel" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" pattern="^\+998\d{9}$" title="Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam" required>
+                    <span class="text-danger" id="phoneNumberError"></span>
+                    <label for="Birthdate">Tug'ilgan sanasi:</label>
+                    <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
+                    <label for="Email">Elektron pochta:</label>
+                    <input type="email" id="Email" name="Email" value="@Model.Email" required>
+                    <label for="StudentRegNumber">Student raqami:</label>
+                    <input type="text" id="StudentRegNumber" name="StudentRegNumber" value="@Model.StudentRageNumber" required>
+                    <div class="form-group">
+                        <label asp-for="Img" class="control-label">Rasm</label>
+                        <input type="file" id="Img" name="Img" class="form-control-file" />
+                        <span class="text-danger" id="imgError"></span>
+                    </div>
+                <input type="submit" value="Submit" onclick="return validateForm();">
             </form>
+            </div>
         </div>
-    </div>
     <script>
-        var phoneNumberInput = document.getElementById("PhoneNumber");
-        var phoneNumberError = document.getElementById("phoneNumberError");
-
-        phoneNumberInput.addEventListener("input", function (event) {
-            if (phoneNumberInput.validity.patternMismatch) {
-                phoneNumberError.textContent = "Telefon raqami to'g'ri formatda bo'lishi kerak: +998 va 9 ta raqam";
-            } else {
-                phoneNumberError.textContent = "";
-            }
-        });
-
-        document.querySelector('form').addEventListener('submit', function (event) {
-            var input = document.getElementById('Img');
-            var file = input.files[0];
-            var imgError = document.getElementById('imgError');
+        function validateForm() {
+            var firstName = document.getElementById("FirstName").value;
+            var lastName = document.getElementById("LastName").value;
+            var birthDate = document.getElementById("Birthdate").value;
+            var email = document.getElementById("Email").value;
+            var phoneNumber = document.getElementById("PhoneNumber").value;
+            var studentRegNumber = document.getElementById("StudentRegNumber").value;
+            var imgInput = document.getElementById("Img");
+            var file = imgInput.files[0];
+            var imgError = document.getElementById("imgError");
             var allowedExtensions = /(\.jpg|\.jpeg)$/i;
 
-            if (input.value && !allowedExtensions.exec(input.value)) {
-                imgError.textContent = 'Faqat JPG va JPEG formatidagi rasm fayllarini yuklang.';
-                input.value = ''; // Faylni tanlanganidan keyin o'chirish
-
-                event.preventDefault(); // Formani yuborishni to'xtatish
-            } else {
-                imgError.textContent = '';
+            if (!firstName || !lastName || !birthDate || !email || !phoneNumber || !studentRegNumber) {
+                alert("Iltimos, barcha maydonlarni to'ldiring!");
+                return false;
             }
-        });
+
+            if (file && !allowedExtensions.exec(file.name)) {
+                imgError.textContent = 'Faqat JPG va JPEG formatidagi rasm fayllarini yuklang.';
+                return false;
+            }
+
+            imgError.textContent = '';
+            return true;
+        }
     </script>
-</body>
+    </body>
 </html>
+
+
 

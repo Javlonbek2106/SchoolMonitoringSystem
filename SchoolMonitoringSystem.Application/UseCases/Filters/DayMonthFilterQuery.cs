@@ -2,14 +2,13 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SchoolMonitoringSystem.Application.Common;
-using SchoolMonitoringSystem.Application.Common.Exceptions;
 using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Application.UseCases.Filters
 {
-	public record DayMonthFilterQuery(int PageNumber = 1, int PageSize = 10) : IRequest<PaginatedList<StudentDto>>;
+    public record DayMonthFilterQuery() : IRequest<List<StudentDto>>;
 
-	public class DayMonthFilterQueryHandler : IRequestHandler<DayMonthFilterQuery, PaginatedList<StudentDto>>
+	public class DayMonthFilterQueryHandler : IRequestHandler<DayMonthFilterQuery, List<StudentDto>>
 	{
 
 
@@ -22,7 +21,7 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 			_mapper = mapper;
 		}
 
-		public async Task<PaginatedList<StudentDto>> Handle(DayMonthFilterQuery request, CancellationToken cancellationToken)
+		public async Task<List<StudentDto>> Handle(DayMonthFilterQuery request, CancellationToken cancellationToken)
 		{
 			Student[] students = await _dbContext.Students.Include(x => x.Grades).ToArrayAsync();
 
@@ -32,11 +31,9 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 
 			List<StudentDto> studentDtos = _mapper.Map<StudentDto[]>(filterDayMonthStudents).ToList();
 
-			PaginatedList<StudentDto> paginatedList =
-				 PaginatedList<StudentDto>.CreateAsync(
-					studentDtos, request.PageNumber, request.PageSize);
+			
 
-			return paginatedList;
+			return studentDtos;
 		}
 	}
 }

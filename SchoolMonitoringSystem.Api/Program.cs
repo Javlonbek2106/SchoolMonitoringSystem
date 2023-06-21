@@ -13,6 +13,17 @@ namespace SchoolMonitoringSystem.Api
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://www.microsoft.com")
+                        .WithMethods("get", "post")
+                        .AllowAnyHeader();
+                });
+            });
+
+
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             IConfiguration configuration = builder.Configuration;
@@ -27,6 +38,7 @@ namespace SchoolMonitoringSystem.Api
             builder.Services.AddLazyCache();
             builder.Services.AddRazorPages();
             var app = builder.Build();
+            app.UseCors();
             app.UseCustomMiddleware();
 
             // Configure the HTTP request pipeline.

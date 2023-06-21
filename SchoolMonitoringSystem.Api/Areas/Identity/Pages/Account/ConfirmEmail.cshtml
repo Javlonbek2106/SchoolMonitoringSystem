@@ -1,0 +1,19 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+<div class="d-flex justify-content-center">
+    <div>
+
+<h1>@ViewData["Title"]</h1>
+    </div>
+    <div>
+<h2>Muvaffaqiyatli ro'yxatdan otdingiz</h2>
+    </div>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+</div>
+<div class="d-flex justify-content-center">
+    <a href="/home/index" class="btn btn-primary">Bosh sahifaga qaytish</a>
+</div>
+

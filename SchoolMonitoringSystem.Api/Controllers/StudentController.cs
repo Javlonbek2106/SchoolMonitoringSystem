@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application.UseCases;
 using X.PagedList;
@@ -20,7 +21,6 @@ namespace SchoolMonitoringSystem.Api.Controllers
 			return RedirectToAction(nameof(GetAllStudents));
 		}
         [HttpGet]
-        //[LazyCache(5, 10)]
         public async Task<IActionResult> GetByStudentId(GetStudentQuery studentQuery)
         {
             var subjects = await Mediator.Send(new GetAllSubjectQuery());
@@ -28,7 +28,8 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return View(await Mediator.Send(studentQuery));
         }
         [HttpGet]
-        [LazyCache(5,10)]
+        [LazyCache(2, 5)]
+        [EnableRateLimiting("Token")]
         public async ValueTask<IActionResult> GetAllStudents(int page = 1)
         {
             IPagedList<StudentDto> query = (await Mediator

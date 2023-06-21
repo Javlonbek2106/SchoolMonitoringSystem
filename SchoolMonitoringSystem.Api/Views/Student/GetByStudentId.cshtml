@@ -89,28 +89,28 @@
 
 <body>    
     <div class="full-page-background">
-    <div class="details-form" data-student-id="@Model.Id">
-        <h2>Talaba ma'lumotlari</h2>
+        <div class="details-form" data-student-id="@Model.Id">
+            <h2>Talaba ma'lumotlari</h2>
 
-        <img decoding="async" src="@Url.Content("~/" + @Model.Img)" width="250px" height="250px" />
-        <p><strong>Ism:</strong> @Model.FirstName</p>
-        <p><strong>Familiya:</strong> @Model.LastName</p>
-        <p><strong>Tug'ilgan sanasi:</strong> @Model.BirthDate</p>
-        <p><strong>Elektron pochta:</strong> @Model.Email</p>
-        <p><strong>Telefon raqami:</strong> @Model.PhoneNumber</p>
-        <p><strong>Student raqami:</strong> @Model.StudentRageNumber</p>
-        @if (subjects != null && Model.Grades != null && Model.Grades.Any())
-        {
-            var maxGradeSubject = (from subject in subjects
-                       join grade in Model.Grades on subject.Id equals grade.SubjectId
-                       orderby grade.Ball descending
-                       select subject).FirstOrDefault();
-            <p><strong>Eng yuqori ball toʻplagan fan:</strong> @maxGradeSubject.SubjectName</p>
-        }
-    </div>
-    <div class="d-flex justify-content-between">
-        <a href="/student/getallstudents" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
-    </div>
+            <img decoding="async" src="@Url.Content("~/" + @Model.Img)" width="250px" height="250px" />
+            <p><strong>Ism:</strong> @Model.FirstName</p>
+            <p><strong>Familiya:</strong> @Model.LastName</p>
+            <p><strong>Tug'ilgan sanasi:</strong> @Model.BirthDate</p>
+            <p><strong>Elektron pochta:</strong> @Model.Email</p>
+            <p><strong>Telefon raqami:</strong> @Model.PhoneNumber</p>
+            <p><strong>Student raqami:</strong> @Model.StudentRageNumber</p>
+            @if (subjects != null && Model.Grades != null && Model.Grades.Any())
+            {
+                var maxGradeSubject = (from subject in subjects
+                                       join grade in Model.Grades on subject.Id equals grade.SubjectId
+                                       orderby grade.Ball descending
+                                       select subject).FirstOrDefault();
+                <p><strong>Eng yuqori ball toʻplagan fan:</strong> @maxGradeSubject.SubjectName</p>
+            }
+            <div class="d-flex justify-content-between">
+                <a href="/student/getallstudents" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

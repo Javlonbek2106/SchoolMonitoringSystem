@@ -8,8 +8,8 @@ using SchoolMonitoringSystem.Domain.Entities;
 namespace SchoolMonitoringSystem.Application.UseCases.Filters
 {
 
-	public record IsBeelineTeacherFilterQuery(int PageNumber = 1, int PageSize = 10) : IRequest<PaginatedList<TeacherDto>>;
-	public class IsBeelineTeacherFilterQueryHandler : IRequestHandler<IsBeelineTeacherFilterQuery, PaginatedList<TeacherDto>>
+	public record IsBeelineTeacherFilterQuery() : IRequest<List<TeacherDto>>;
+	public class IsBeelineTeacherFilterQueryHandler : IRequestHandler<IsBeelineTeacherFilterQuery, List<TeacherDto>>
 	{
 
 
@@ -22,7 +22,7 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 			_mapper = mapper;
 		}
 
-		public async Task<PaginatedList<TeacherDto>> Handle(IsBeelineTeacherFilterQuery request, CancellationToken cancellationToken)
+		public async Task<List<TeacherDto>> Handle(IsBeelineTeacherFilterQuery request, CancellationToken cancellationToken)
 		{
 			Teacher[] teachers = await _dbContext.Teachers.Include(x => x.Subjects).ToArrayAsync();
 
@@ -32,11 +32,7 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 
 			List<TeacherDto> teacherDtos = _mapper.Map<TeacherDto[]>(IsBeelineTeacherFilter).ToList();
 
-			PaginatedList<TeacherDto> paginatedList =
-				 PaginatedList<TeacherDto>.CreateAsync(
-					teacherDtos, request.PageNumber, request.PageSize);
-
-			return paginatedList;
+			return teacherDtos;
 		}
 	}
 

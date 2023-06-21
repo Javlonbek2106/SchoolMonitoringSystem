@@ -1,0 +1,33 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="text-center">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            @if (@Model.DisplayConfirmAccountLink)
+            {
+                <p>
+                    Ushbu ilovada hozirda haqiqiy elektron pochta jo'natuvchisi ro'yxatdan o'tmagan, qarang
+                    <a href="https://aka.ms/aspaccountconf">ushbu hujjatlar</a> haqiqiy elektron pochta jo'natuvchisini qanday sozlash uchun.
+                    Odatda bu elektron pochta orqali yuboriladi:
+                    <a id="tasdiqlashButton" href="@Model.EmailConfirmationUrl" class="btn btn-primary d-block mx-auto">Hisobingizni tasdiqlash</a>
+                </p>
+            }
+            else
+            {
+                <p>
+                    Hisobingizni tasdiqlash uchun elektron pochtangizni tekshiring.
+                </p>
+            }
+        </div>
+    </div>
+</div>

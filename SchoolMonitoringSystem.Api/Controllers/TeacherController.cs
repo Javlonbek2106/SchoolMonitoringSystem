@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using SchoolMonitoringSystem.Api.Filters;
 using SchoolMonitoringSystem.Application.UseCases;
 using X.PagedList;
@@ -21,14 +22,14 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return RedirectToAction(nameof(GetAllTeachers));
         }
         [HttpGet]
-        //[LazyCache(5, 10)]
         public async Task<IActionResult> GetByTeacherId(GetTeacherQuery teacherQuery)
         {
             return View(await Mediator.Send(teacherQuery));
         }
 
         [HttpGet]
-        [LazyCache(5,10)]
+        [LazyCache(2, 5)]
+        [EnableRateLimiting("Token")]
         public async Task<IActionResult> GetAllTeachers(int page = 1)
         {
             ViewData["teachers"] = await Mediator.Send(new GetAllTeacherQuery());

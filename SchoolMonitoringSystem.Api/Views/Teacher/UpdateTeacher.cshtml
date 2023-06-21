@@ -105,29 +105,60 @@
 </head>
 <body>
     <div class="full-page-background">
-    <div class="updatee-form">
-        <h2>O'qituvchi ma'lumotlarini tahrirlash</h2>
-        <form id="updateForm" enctype="multipart/form-data" action="/teacher/updateteacher" method="POST">
-            <input type="hidden" id="id" name="id" value="@Model.Id">
-            <label for="FirstName">Ism:</label>
-            <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
-            <label for="LastName">Familiya:</label>
-            <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
-            <label for="PhoneNumber">Telefon raqami:</label>
-            <input type="text" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required>
-            <label for="Birthdate">Tug'ilgan sanasi:</label>
-            <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
-            <label for="Email">Elektron pochta:</label>
-            <input type="text" id="Email" name="Email" value="@Model.Email" required>
-            <div class="form-group">
-                <label asp-for="Img" class="control-label">Rasm</label>
-                <input type="file" asp-for="Img" class="form-control-file" />
-                <span asp-validation-for="Img" class="text-danger"></span>
-            </div>
-            <input type="submit" value="Submit">
-        </form>
+        <div class="updatee-form">
+            <h2>O'qituvchi ma'lumotlarini tahrirlash</h2>
+            <form id="updateForm" enctype="multipart/form-data" action="/teacher/updateteacher" method="POST" onsubmit="return validateForm()">
+                <input type="hidden" id="id" name="id" value="@Model.Id">
+                <label for="FirstName">Ism:</label>
+                <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" required>
+                <label for="LastName">Familiya:</label>
+                <input type="text" id="LastName" name="LastName" value="@Model.LastName" required>
+                <label for="PhoneNumber">Telefon raqami:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required>
+                <label for="Birthdate">Tug'ilgan sanasi:</label>
+                <input type="date" id="Birthdate" name="Birthdate" value="@Model.BirthDate" required>
+                <label for="Email">Elektron pochta:</label>
+                <input type="text" id="Email" name="Email" value="@Model.Email" required>
+                <div class="form-group">
+                    <label asp-for="Img" class="control-label">Rasm</label>
+                    <input type="file" asp-for="Img" class="form-control-file" />
+                    <span asp-validation-for="Img" id="imgError" class="text-danger"></span>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </div>
-    </div>
+    <script>
+        function validateForm() {
+            var firstName = document.getElementById("FirstName").value;
+            var lastName = document.getElementById("LastName").value;
+            var birthDate = document.getElementById("Birthdate").value;
+            var email = document.getElementById("Email").value;
+            var phoneNumber = document.getElementById("PhoneNumber").value;
+            var imgInput = document.getElementById("Img");
+            var file = imgInput.files[0];
+            var imgError = document.getElementById("imgError");
+            var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+
+            if (!firstName || !lastName || !birthDate || !email || !phoneNumber) {
+                alert("Iltimos, barcha maydonlarni to'ldiring!");
+                return false;
+            }
+
+            if (file) {
+                if (!allowedExtensions.exec(file.name)) {
+                    imgError.textContent = 'Faqat JPG va JPEG formatidagi rasm fayllarini yuklang.';
+                    return false;
+                }
+            } else {
+                imgError.textContent = 'Iltimos, bir rasm yuklang.';
+                return false;
+            }
+
+            imgError.textContent = '';
+            return true;
+        }
+    </script>
 
 
 </body>

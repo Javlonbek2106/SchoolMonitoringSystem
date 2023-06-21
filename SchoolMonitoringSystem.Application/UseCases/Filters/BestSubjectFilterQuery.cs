@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using SchoolMonitoringSystem.Application.Common;
-using SchoolMonitoringSystem.Domain.Entities;
 
 namespace SchoolMonitoringSystem.Application.UseCases.Filters
 {

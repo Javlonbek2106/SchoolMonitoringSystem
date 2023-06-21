@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SchoolMonitoringSystem.Application.Common;
-using SchoolMonitoringSystem.Application.Common.Exceptions;
 
 namespace SchoolMonitoringSystem.Application.UseCases.Filters
 {
-    public record BestTeacherFilterQuery(int PageNumber = 1, int PageSize = 10) : IRequest<PaginatedList<TeacherDto>>;
-    public class BestTeacherFilterQueryHandler : IRequestHandler<BestTeacherFilterQuery, PaginatedList<TeacherDto>>
+    public record BestTeacherFilterQuery() : IRequest<List<TeacherDto>>;
+    public class BestTeacherFilterQueryHandler : IRequestHandler<BestTeacherFilterQuery, List<TeacherDto>>
     {
 
 
@@ -19,7 +18,7 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<TeacherDto>> Handle(BestTeacherFilterQuery request, CancellationToken cancellationToken)
+        public async Task<List<TeacherDto>> Handle(BestTeacherFilterQuery request, CancellationToken cancellationToken)
         {
             var teachers = from mark in _dbContext.Grades
                            join subject in _dbContext.Subjects
@@ -33,11 +32,9 @@ namespace SchoolMonitoringSystem.Application.UseCases.Filters
 
             List<TeacherDto> dtos = _mapper.Map<TeacherDto[]>(ListTeachers).ToList();
 
-            PaginatedList<TeacherDto> paginatedList =
-                 PaginatedList<TeacherDto>.CreateAsync(
-                    dtos, request.PageNumber, request.PageSize);
+       
 
-            return paginatedList;
+            return dtos;
         }
 
     }

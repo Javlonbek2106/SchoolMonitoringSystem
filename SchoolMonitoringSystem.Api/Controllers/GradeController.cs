@@ -27,7 +27,7 @@ namespace SchoolMonitoringSystem.Api.Controllers
             return RedirectToAction(nameof(GetAllGrades));
         }
         [HttpGet]
-        [LazyCache(5, 10)]
+        [LazyCache(2, 5)]
         [EnableRateLimiting("Token")]
         public async Task<IActionResult> GetAllGrades(int page = 1)
         {

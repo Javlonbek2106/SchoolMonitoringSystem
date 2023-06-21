@@ -85,28 +85,30 @@
 
 <body> 
     <div class="full-page-background">
-    <div class="details-form" data-student-id="@Model.Id">
-        <h2>Talaba ma'lumotlari</h2>
+        <div class="details-form" data-student-id="@Model.Id">
+            <h2>Talaba ma'lumotlari</h2>
 
-        <img decoding="async" src="@Url.Content("~/" + @Model.Img)" width="250px" height="250px" />
-        <p><strong>Ism:</strong> @Model.FirstName</p>
-        <p><strong>Familiya:</strong> @Model.LastName</p>
-        <p><strong>Tug'ilgan sanasi:</strong> @Model.BirthDate</p>
-        <p><strong>Elektron pochta:</strong> @Model.Email</p>
-        <p><strong>Telefon raqami:</strong> @Model.PhoneNumber</p>
-        <strong>Darslar:</strong>
-           <ul>
-               @foreach (var subject in Model.Subjects.Where(s => s.TeacherId == Model.Id))
-               {
-                   <li>@subject.SubjectName</li>
-               }
-           </ul>
+            <img decoding="async" src="@Url.Content("~/" + @Model.Img)" width="250px" height="250px" />
+            <p><strong>Ism:</strong> @Model.FirstName</p>
+            <p><strong>Familiya:</strong> @Model.LastName</p>
+            <p><strong>Tug'ilgan sanasi:</strong> @Model.BirthDate</p>
+            <p><strong>Elektron pochta:</strong> @Model.Email</p>
+            <p><strong>Telefon raqami:</strong> @Model.PhoneNumber</p>
+            <strong>Darslar:</strong>
+            <ul>
+                @foreach (var subject in Model.Subjects.Where(s => s.TeacherId == Model.Id))
+                {
+                    @subject.SubjectName
+                }           
+            </ul>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="/teacher/getallteachers" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-                <a href="/teacher/getallteachers" class="btn btn-info"><i class="fas fa-arrow-left"></i> Orqaga</a>
-    </div>
-    </div>
+
 </body>
 </html>
 
