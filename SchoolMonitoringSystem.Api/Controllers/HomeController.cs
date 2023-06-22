@@ -5,6 +5,7 @@ using SchoolMonitoringSystem.Api.Models;
 
 namespace SchoolMonitoringSystem.Api.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

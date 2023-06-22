@@ -13,20 +13,24 @@ namespace SchoolMonitoringSystem.Api
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddCors(options =>
+            IConfiguration configuration = builder.Configuration;
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(builder =>
+            //    {
+            //        builder.WithOrigins("https://www.microsoft.com")
+            //            .WithMethods("get", "post")
+            //            .AllowAnyHeader();
+            //    });
+            //});
+
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("https://www.microsoft.com")
-                        .WithMethods("get", "post")
-                        .AllowAnyHeader();
-                });
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
             });
 
-
-
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
-            IConfiguration configuration = builder.Configuration;
 
             ConfigurationServices.AddRateLimiters(builder);
             LoggingConfigurations.UseLogging(configuration);
