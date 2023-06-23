@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using SchoolMonitoringSystem.Api.Middleware;
 using SchoolMonitoringSystem.Application;
@@ -26,8 +27,13 @@ namespace SchoolMonitoringSystem.Api
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+                googleOptions.ClientId = configuration["AuthenticationGoogle:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["AuthenticationGoogle:Google:ClientSecret"];
+            });
+            builder.Services.AddAuthentication().AddGitHub(githubOptions =>
+            {
+                githubOptions.ClientId = configuration["AuthenticationGithub:Github:ClientId"]!;
+                githubOptions.ClientSecret = configuration["AuthenticationGithub:Github:ClientSecret"]!;
             });
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
